@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.shakal.imageapi.contracts.service.ICreatureService;
 import com.shakal.imageapi.dto.CreatureTokenDTO;
+import com.shakal.imageapi.dto.create.CreatureTokenCreateDTO;
 import com.shakal.imageapi.exception.ResourceNotFoundException;
 import com.shakal.imageapi.filedata.service.ExternalCreatureProfileImageService;
+import com.shakal.imageapi.mappers.CreatureMapper;
 import com.shakal.imageapi.model.Creature;
 //import com.shakal.imageapi.model.Creature;
 import com.shakal.imageapi.repository.ICreatureDAO;
@@ -60,6 +62,12 @@ public class CreatureService implements ICreatureService {
 		return result;
 				
 		
+	}
+
+	@Override
+	public boolean saveCreatureToken(CreatureTokenCreateDTO inputDto) {
+		this.creatureDao.save(CreatureMapper.createDtoToEntity(inputDto));
+		return true;
 	}
 
 }
