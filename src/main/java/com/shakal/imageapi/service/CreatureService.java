@@ -1,15 +1,22 @@
 package com.shakal.imageapi.service;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shakal.imageapi.contracts.service.ICreatureService;
 import com.shakal.imageapi.dto.CreatureTokenDTO;
+import com.shakal.imageapi.dto.GenericImageDTO;
 import com.shakal.imageapi.dto.create.CreatureTokenCreateDTO;
+import com.shakal.imageapi.exception.FileManagementException;
 import com.shakal.imageapi.exception.ResourceNotFoundException;
 import com.shakal.imageapi.filedata.service.ExternalCreatureProfileImageService;
+import com.shakal.imageapi.helpers.FileHelper;
 import com.shakal.imageapi.mappers.CreatureMapper;
 import com.shakal.imageapi.model.Creature;
+import com.shakal.imageapi.model.floor.FloorImage;
 //import com.shakal.imageapi.model.Creature;
 import com.shakal.imageapi.repository.ICreatureDAO;
 //import com.shakal.imageapi.repository.ImageTokenDAO;
@@ -35,21 +42,6 @@ public class CreatureService implements ICreatureService {
 
 	@Override
 	public CreatureTokenDTO getCreatureToken(long id) throws ResourceNotFoundException {
-		/*
-		ImageToken search = this.imageTokenDAO.retrieveCharacterTokenById(id)
-					.orElseThrow(() -> new ResourceNotFoundException(Messages.CHARACTER_NOT_FOUND));
-					/*
-		/*
-		if(search.getImagePath() == null || search.getImagePath().trim().length()  0 ) {
-			CreatureTokenDTO result = new CreatureTokenDTO();
-			result.setId(id);
-			//result.setPicture(search.getCreature().getImagePath());
-			result.setPicture(externalProfileImageService.retrieveFileById());
-			return result;
-		}else {
-			return CreatureTokenMapper.mapEntityToDTO(search);
-		}
-		*/
 		
 		Creature search = this.creatureDao.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(Messages.CHARACTER_NOT_FOUND));
@@ -65,9 +57,27 @@ public class CreatureService implements ICreatureService {
 	}
 
 	@Override
-	public boolean saveCreatureToken(CreatureTokenCreateDTO inputDto) {
-		this.creatureDao.save(CreatureMapper.createDtoToEntity(inputDto));
+	public boolean saveCreatureToken(GenericImageDTO inputDto) throws FileManagementException {
+		
+		Creature entityCreatureImage = new Creature();
+		entityCreatureImage.setId(inputDto.getId());
+		
+		entityCreatureImage.setImagePath(
+				this.saveCharacterProfilePicture(inputDto.getId(), inputDto.getImage())
+				);
+		this.creatureDao.save(entityCreatureImage);
 		return true;
+	}
+	private String saveCharacterProfilePicture(long id,String base64Image) throws FileManagementException {
+		String fileName = "map" + id + ".jpg";
+		String fileIdentifier = null;
+		try {
+			File fileToUp = FileHelper.base64ToFile(base64Image);
+			fileIdentifier = externalProfileImageService.saveMapImageFile(fileToUp, fileName);
+			return fileIdentifier;
+		} catch (IOException e) {
+			throw new FileManagementException("Erro ao salvar o arquivo");
+		}
 	}
 
 }

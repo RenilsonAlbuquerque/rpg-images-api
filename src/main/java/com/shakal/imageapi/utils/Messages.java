@@ -11,6 +11,7 @@ public class Messages {
     public static final String INVALID_TOKEN_FORMAT = "Formato do token invalido";
     public static final String MONSTER_NOT_FOUND = "O monstro nao existe";
     public static final String CHARACTER_NOT_FOUND = "O personagem nao existe";
+    public static final String FLOOR_NOT_FOUND = "O mapa nao existe";
     public static final String STORY_NOT_FOUND = "A histaria nao existe";
     public static final String PLACE_NOT_FOUND = "O Lugar nao existe";
     public static final String COMBAT_STATE_NOT_FOUND = "O combate não existe";

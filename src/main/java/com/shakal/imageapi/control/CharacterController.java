@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shakal.imageapi.contracts.service.ICreatureService;
+import com.shakal.imageapi.exception.FileManagementException;
 import com.shakal.imageapi.exception.ResourceNotFoundException;
 import com.shakal.imageapi.dto.CreatureTokenDTO;
+import com.shakal.imageapi.dto.GenericImageDTO;
 import com.shakal.imageapi.dto.create.CreatureTokenCreateDTO;
 
 @CrossOrigin
@@ -30,7 +32,7 @@ public class CharacterController {
 		return new ResponseEntity<CreatureTokenDTO>(result, HttpStatus.OK);
     }
 	@PostMapping(value="/token")
-    public ResponseEntity<Boolean> saveCreatureToken(@RequestBody CreatureTokenCreateDTO inputDto) throws ResourceNotFoundException{
+    public ResponseEntity<Boolean> saveCreatureToken(@RequestBody GenericImageDTO inputDto) throws FileManagementException{
 		return new ResponseEntity<Boolean>(this.creatureService.saveCreatureToken(inputDto),HttpStatus.OK);
     }
 
