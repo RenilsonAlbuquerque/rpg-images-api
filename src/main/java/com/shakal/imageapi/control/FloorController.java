@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shakal.imageapi.contracts.service.IFloorService;
+import com.shakal.imageapi.dto.FloorDetailDTO;
 import com.shakal.imageapi.dto.GenericImageDTO;
 import com.shakal.imageapi.exception.FileManagementException;
 import com.shakal.imageapi.exception.ResourceNotFoundException;
@@ -26,7 +27,7 @@ public class FloorController {
 	private IFloorService floorService;
 	
 	@PostMapping(value="/save",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> saveFloorImage(@RequestBody GenericImageDTO inputDto) throws FileManagementException{
+    public ResponseEntity<Boolean> saveFloorImage(@RequestBody FloorDetailDTO inputDto) throws FileManagementException{
 		return new ResponseEntity<Boolean>(this.floorService.saveFloor(inputDto), HttpStatus.OK);
     }
 	

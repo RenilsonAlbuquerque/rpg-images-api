@@ -9,17 +9,12 @@ import org.springframework.stereotype.Service;
 import com.shakal.imageapi.contracts.service.ICreatureService;
 import com.shakal.imageapi.dto.CreatureTokenDTO;
 import com.shakal.imageapi.dto.GenericImageDTO;
-import com.shakal.imageapi.dto.create.CreatureTokenCreateDTO;
 import com.shakal.imageapi.exception.FileManagementException;
 import com.shakal.imageapi.exception.ResourceNotFoundException;
 import com.shakal.imageapi.filedata.service.ExternalCreatureProfileImageService;
 import com.shakal.imageapi.helpers.FileHelper;
-import com.shakal.imageapi.mappers.CreatureMapper;
 import com.shakal.imageapi.model.Creature;
-import com.shakal.imageapi.model.floor.FloorImage;
-//import com.shakal.imageapi.model.Creature;
 import com.shakal.imageapi.repository.ICreatureDAO;
-//import com.shakal.imageapi.repository.ImageTokenDAO;
 import com.shakal.imageapi.utils.Messages;
 
 @Service

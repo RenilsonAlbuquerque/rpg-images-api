@@ -14,6 +14,8 @@ public class FloorImage {
 	
 	@Column(length = 500)
 	private String imagePath;
+	
+	private int squareSize;
 
 	public Long getId() {
 		return id;
@@ -29,6 +31,14 @@ public class FloorImage {
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+
+	public int getSquareSize() {
+		return squareSize;
+	}
+
+	public void setSquareSize(int squareSize) {
+		this.squareSize = squareSize;
 	}
 	
 	

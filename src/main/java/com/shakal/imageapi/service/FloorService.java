@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.shakal.imageapi.contracts.service.IFloorService;
+import com.shakal.imageapi.dto.FloorDetailDTO;
 import com.shakal.imageapi.dto.GenericImageDTO;
 import com.shakal.imageapi.exception.ResourceNotFoundException;
 import com.shakal.imageapi.filedata.service.ExternalFloorImageService;
@@ -29,24 +30,26 @@ public class FloorService implements IFloorService {
 		
 	}
 	@Override
-	public boolean saveFloor(GenericImageDTO inputDto) throws FileManagementException {
+	public boolean saveFloor(FloorDetailDTO inputDto) throws FileManagementException {
 		FloorImage entityFloorImage = new FloorImage();
 		entityFloorImage.setId(inputDto.getId());
 		
 		entityFloorImage.setImagePath(
-				this.saveCharacterProfilePicture(inputDto.getId(), inputDto.getImage())
+				this.saveCharacterProfilePicture(inputDto.getId(), inputDto.getMap())
 				);
+		entityFloorImage.setSquareSize(inputDto.getSquareSize());
 		this.floorDAO.save(entityFloorImage);
 		return true;
 	}
 	
 	@Override
-	public GenericImageDTO getFloorImageToken(long id) throws ResourceNotFoundException {
+	public FloorDetailDTO getFloorImageToken(long id) throws ResourceNotFoundException {
 		FloorImage search = this.floorDAO.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(Messages.FLOOR_NOT_FOUND));
-		GenericImageDTO result = new GenericImageDTO();
+		FloorDetailDTO result = new FloorDetailDTO();
 		result.setId(id);
-		result.setImage(this.externalFloorImageService.retrieveFileById(search.getImagePath()));
+		result.setMap(this.externalFloorImageService.retrieveFileById(search.getImagePath()));
+		result.setSquareSize(search.getSquareSize());
 		return result;
 	}
 	private String saveCharacterProfilePicture(long id,String base64Image) throws FileManagementException {
