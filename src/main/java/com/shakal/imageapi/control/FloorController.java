@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shakal.imageapi.contracts.service.IFloorMarkService;
 import com.shakal.imageapi.contracts.service.IFloorService;
+import com.shakal.imageapi.dto.commons.NumberNumberDTO;
 import com.shakal.imageapi.dto.create.FloorCreateDTO;
+import com.shakal.imageapi.dto.create.PlaceMarkCreateDTO;
 import com.shakal.imageapi.dto.info.FloorInfoDTO;
 import com.shakal.imageapi.dto.info.MapWallsDTO;
 import com.shakal.imageapi.dto.overview.FloorMarkOverviewDTO;
 import com.shakal.imageapi.exception.FileManagementException;
 import com.shakal.imageapi.exception.ResourceNotFoundException;
+
 
 
 
@@ -37,6 +40,14 @@ public class FloorController {
 	@Autowired
 	private IFloorMarkService floorMarkService;
 	
+	@GetMapping("/default-floor/{id}")
+	public ResponseEntity<Long> getDefaultFloorByPlaceId(@PathVariable Long id) throws ResourceNotFoundException {
+	    return new ResponseEntity<Long>(this.floorService.getDefaultFloorIdByPlaceId(id), HttpStatus.OK);
+	}
+	@PostMapping(value="/create/mark",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PlaceMarkCreateDTO> createNewMark(@RequestBody PlaceMarkCreateDTO markDTO) throws ResourceNotFoundException{
+        return new ResponseEntity<PlaceMarkCreateDTO>(this.floorMarkService.createFloorMark(markDTO), HttpStatus.OK);
+    }
 	@GetMapping("/info/{id}")
 	public ResponseEntity<FloorInfoDTO> getFloorInfoById(@PathVariable Long id) throws ResourceNotFoundException {
 	    return new ResponseEntity<FloorInfoDTO>(this.floorService.getFloorById(id), HttpStatus.OK);
@@ -53,6 +64,10 @@ public class FloorController {
 	@GetMapping("/list/marks/{id}")
 	public ResponseEntity<List<FloorMarkOverviewDTO>> getPlacesMarksListByPlaceId(@PathVariable Long id) throws ResourceNotFoundException {
 	    return new ResponseEntity<List<FloorMarkOverviewDTO>>(this.floorMarkService.getAllPlaceMarksOfPlace(id), HttpStatus.OK);
+	}
+	@GetMapping("/list-by-place/{id}")
+	public ResponseEntity<List<NumberNumberDTO>> getFloorsListByPlaceId(@PathVariable Long id) throws ResourceNotFoundException {
+	    return new ResponseEntity<List<NumberNumberDTO>>(this.floorService.getFloorsByPlaceId(id), HttpStatus.OK);
 	}
 
 }

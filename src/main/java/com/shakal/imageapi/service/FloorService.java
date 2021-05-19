@@ -4,12 +4,12 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.shakal.imageapi.contracts.service.IFloorService;
+import com.shakal.imageapi.dto.commons.NumberNumberDTO;
 import com.shakal.imageapi.dto.create.FloorCreateDTO;
 import com.shakal.imageapi.dto.info.FloorInfoDTO;
 import com.shakal.imageapi.dto.info.MapWallsDTO;
@@ -20,7 +20,6 @@ import com.shakal.imageapi.repository.IFloorDAO;
 import com.shakal.imageapi.repository.IFloorImageDAO;
 import com.shakal.imageapi.repository.IFloorWallDAO;
 import com.shakal.imageapi.utils.Messages;
-
 import com.shakal.imageapi.exception.FileManagementException;
 import com.shakal.imageapi.helpers.FileHelper;
 import com.shakal.imageapi.mappers.FloorMapper;
@@ -142,6 +141,16 @@ public class FloorService implements IFloorService {
 			this.floorWallsDAO.save( FloorWallsMapper.dtoToEntity(wall,floor));
 		}
 		return true;
+	}
+	@Override
+	public List<NumberNumberDTO> getFloorsByPlaceId(long placeId) throws ResourceNotFoundException {
+		return this.floorRepository.getFloorsByPlaceId(placeId).stream()
+				.map(floor ->  new NumberNumberDTO(floor.getFloorOrder(),floor.getId()))
+				 .collect(Collectors.toList());
+	}
+	@Override
+	public Long getDefaultFloorIdByPlaceId(Long placeId) {
+		return this.floorRepository.getFloorsByPlaceId(placeId).get(0).getId();
 	}
 
 	
