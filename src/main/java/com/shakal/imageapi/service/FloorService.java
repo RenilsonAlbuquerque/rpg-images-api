@@ -92,6 +92,7 @@ public class FloorService implements IFloorService {
 	}
 	@Override
 	public boolean createFloor(Long placeId,List<FloorCreateDTO> floorCreateDto) throws FileManagementException {
+		long orderCounter = 0;
 		for(FloorCreateDTO floorDto: floorCreateDto) {
 			Floor entity = new Floor();
 			
@@ -101,11 +102,12 @@ public class FloorService implements IFloorService {
 			entity.setSquareSizeCm(floorDto.getSquareDimensionCm());
 			entity.setNaturalHeight(200d);
 			entity.setNaturalWidth(200d);
-			entity.setFloorOrder(floorDto.getFloorOrder());
+			entity.setFloorOrder(orderCounter);
 
 			
 			entity.setPlaceId(placeId);
 			entity = this.floorRepository.save(entity);
+			orderCounter++;
 			
 			String fileName = "map" + entity.getId()+ ".jpg";
 			Dimension dimension = new Dimension();

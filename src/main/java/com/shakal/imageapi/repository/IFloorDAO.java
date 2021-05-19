@@ -10,6 +10,6 @@ import com.shakal.imageapi.model.floor.Floor;
 
 public interface IFloorDAO extends JpaRepository<Floor,Long>{
 
-	@Query("SELECT fl FROM Floor fl  where fl.placeId = ?1")
+	@Query("SELECT fl FROM Floor fl where fl.placeId = ?1")
 	List<Floor> getFloorsByPlaceId(long floorId);
 }
