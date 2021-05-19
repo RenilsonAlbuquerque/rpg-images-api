@@ -1,11 +1,17 @@
 package com.shakal.imageapi.contracts.service;
 
-import com.shakal.imageapi.dto.FloorDetailDTO;
-import com.shakal.imageapi.dto.GenericImageDTO;
+import java.util.List;
+
+
+import com.shakal.imageapi.dto.create.FloorCreateDTO;
+import com.shakal.imageapi.dto.info.FloorInfoDTO;
+import com.shakal.imageapi.dto.info.MapWallsDTO;
 import com.shakal.imageapi.exception.FileManagementException;
 import com.shakal.imageapi.exception.ResourceNotFoundException;
 
+
 public interface IFloorService {
-	boolean saveFloor(FloorDetailDTO inputDto) throws FileManagementException ;
-	FloorDetailDTO getFloorImageToken(long id) throws ResourceNotFoundException;
+	FloorInfoDTO getFloorById(long id) throws ResourceNotFoundException;
+	boolean createFloor(Long floorId,List<FloorCreateDTO> floorCreateDto) throws FileManagementException;
+	boolean updateFloorWallsImage(long floorId,List<MapWallsDTO> inputDto) throws ResourceNotFoundException,FileManagementException;
 }
