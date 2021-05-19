@@ -32,8 +32,8 @@ public class FloorController {
     }
 	
 	@GetMapping(value="/{id}")
-    public ResponseEntity<GenericImageDTO> getFloorImage(@PathVariable Long id) throws ResourceNotFoundException{
-		return new ResponseEntity<GenericImageDTO>(this.floorService.getFloorImageToken(id), HttpStatus.OK);
+    public ResponseEntity<FloorDetailDTO> getFloorImage(@PathVariable Long id) throws ResourceNotFoundException{
+		return new ResponseEntity<FloorDetailDTO>(this.floorService.getFloorImageToken(id), HttpStatus.OK);
     }
 
 }
