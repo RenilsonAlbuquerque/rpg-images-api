@@ -150,7 +150,8 @@ public class FloorService implements IFloorService {
 	}
 	@Override
 	public Long getDefaultFloorIdByPlaceId(Long placeId) {
-		return this.floorRepository.getFloorsByPlaceId(placeId).get(0).getId();
+		List<Floor> result = this.floorRepository.getFloorsByPlaceId(placeId);
+		return (result.size() > 0 ) ? result.get(0).getId() : 0 ;
 	}
 
 	
