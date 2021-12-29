@@ -1,8 +1,10 @@
 package com.shakal.imageapi.control;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,9 @@ public class FloorController {
 	
 	@GetMapping("/default-floor/{id}")
 	public ResponseEntity<Long> getDefaultFloorByPlaceId(@PathVariable Long id) throws ResourceNotFoundException {
-	    return new ResponseEntity<Long>(this.floorService.getDefaultFloorIdByPlaceId(id), HttpStatus.OK);
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(120, TimeUnit.MINUTES))
+				.body(this.floorService.getDefaultFloorIdByPlaceId(id));
 	}
 	@PostMapping(value="/create/mark",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PlaceMarkCreateDTO> createNewMark(@RequestBody PlaceMarkCreateDTO markDTO) throws ResourceNotFoundException{
@@ -50,7 +54,9 @@ public class FloorController {
     }
 	@GetMapping("/info/{id}")
 	public ResponseEntity<FloorInfoDTO> getFloorInfoById(@PathVariable Long id) throws ResourceNotFoundException {
-	    return new ResponseEntity<FloorInfoDTO>(this.floorService.getFloorById(id), HttpStatus.OK);
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(120, TimeUnit.MINUTES))
+				.body(this.floorService.getFloorById(id));
 	}
 	@PostMapping(value="/create/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> createPlaces(@PathVariable Long id,@RequestBody List<FloorCreateDTO> inputDto) throws ResourceNotFoundException, FileManagementException{

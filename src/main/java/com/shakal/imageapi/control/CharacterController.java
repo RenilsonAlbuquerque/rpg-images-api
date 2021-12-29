@@ -1,6 +1,7 @@
 package com.shakal.imageapi.control;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +19,8 @@ import com.shakal.imageapi.dto.CreatureTokenDTO;
 import com.shakal.imageapi.dto.GenericImageDTO;
 import com.shakal.imageapi.dto.create.CreatureTokenCreateDTO;
 
+import java.util.concurrent.TimeUnit;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/creature")
@@ -27,9 +30,10 @@ public class CharacterController {
 	private ICreatureService creatureService;
 	
 	@GetMapping(value="/token/{id}")
-    public ResponseEntity<CreatureTokenDTO> getCharacterSheet(@PathVariable Long id) throws ResourceNotFoundException{
-		CreatureTokenDTO  result = this.creatureService.getCreatureToken(id);
-		return new ResponseEntity<CreatureTokenDTO>(result, HttpStatus.OK);
+    public ResponseEntity<CreatureTokenDTO> getCreatureToken(@PathVariable Long id) throws ResourceNotFoundException{
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(120, TimeUnit.MINUTES))
+				.body(this.creatureService.getCreatureToken(id));
     }
 	@PostMapping(value="/token")
     public ResponseEntity<Boolean> saveCreatureToken(@RequestBody GenericImageDTO inputDto) throws FileManagementException{
